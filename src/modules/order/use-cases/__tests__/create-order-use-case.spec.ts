@@ -19,7 +19,8 @@ describe("Create order", () => {
     const item = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
-      name: faker.commerce.productName()
+      name: faker.commerce.productName(),
+      value: Number(faker.commerce.price())
     });
 
     const dto = {
@@ -33,6 +34,8 @@ describe("Create order", () => {
     expect(order).toBeInstanceOf(Order);
     expect(order.userId).toBe(dto.userId);
     expect(order.id).toBeTypeOf("string");
+    expect(order.createdAt).toBeDefined();
+    expect(order.createdAt).toBeInstanceOf(Date);
   });
 
   it("Should throw error if order is created without items", async () => {

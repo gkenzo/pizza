@@ -13,5 +13,7 @@ export class GetOrderUseCase {
 
     if (!order || order?.userId !== dto.userId)
       throw new Error(`Order does not exists or belongs to user ${dto.userId}`);
+
+    return order;
   };
 }

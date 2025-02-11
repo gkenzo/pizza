@@ -18,7 +18,7 @@ export class CreateOrderUseCase {
   };
 
   createOrder = async (dto: CreateOrderInputDTO) => {
-    const order = Order.create({ id: randomUUID(), ...dto });
+    const order = Order.create({ id: randomUUID(), createdAt: new Date(), ...dto });
     await this.orderRepository.create(order);
 
     return order;

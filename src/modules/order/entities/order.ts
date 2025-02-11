@@ -45,7 +45,19 @@ export class Order extends Entity<OrderProps> {
     return this.props.items.reduce((total, obj) => total + obj.value, 0);
   }
   get totalValue() {
-    return this.value + this.shippingCost;
+    return this.props.value + this.props.shippingCost;
+  }
+  get createdAt() {
+    return this.props.createdAt;
+  }
+  set createdAt(value: Date) {
+    this.props.createdAt = value;
+  }
+  get updatedAt() {
+    return this.props.updatedAt;
+  }
+  set updatedAt(value: Date) {
+    this.props.updatedAt = value;
   }
   static create(props: OrderProps) {
     if (!props.items || isEmpty(props.items)) throw new Error("Cannot create a order without items");

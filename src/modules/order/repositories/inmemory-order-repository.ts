@@ -9,7 +9,6 @@ export class inMemoryOrderRepository implements OrderRepository {
   };
   delete: (id: string) => Promise<void>;
   update: (id: string) => Promise<void>;
-
   create = async (data: Order): Promise<void> => {
     this.orders.push(data);
   };
