@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { randomInt, randomUUID } from "node:crypto";
 
 import { faker } from "@faker-js/faker";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -20,7 +20,8 @@ describe("Create order", () => {
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: Number(faker.commerce.price())
+      value: randomInt(1000),
+      type: "Pizza"
     });
 
     const dto = {

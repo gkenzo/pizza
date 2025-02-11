@@ -22,7 +22,8 @@ describe("Get Order", () => {
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
 
     const dto = {
@@ -42,7 +43,8 @@ describe("Get Order", () => {
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
 
     const dto = {
@@ -60,13 +62,15 @@ describe("Get Order", () => {
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
     const item2 = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
 
     const orderDto = {
@@ -85,13 +89,15 @@ describe("Get Order", () => {
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
     const item2 = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
-      value: randomInt(1000)
+      value: randomInt(1000),
+      type: "Pizza"
     });
 
     const orderDto: CreateOrderInputDTO = {
