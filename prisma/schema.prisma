@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum orderStatus {
+  PENDING
+  ACTIVE
+  DELIVERY
+  DELIVERED
+  CANCELED
+}
+
+enum itemType {
+  Pizza
+  Beverage
+}
+
+model user {
+  id       String  @id @default(uuid())
+  username String  @db.VarChar(25)
+  password String  @db.VarChar(25)
+  order    order[]
+}
+
+model order {
+  id           String      @id @default(uuid())
+  user         user        @relation(fields: [userId], references: [id])
+  items        item[]
+  shippingCost Float       @map("shipping_cost")
+  value        Float
+  totalValue   Float
+  createdAt    DateTime    @default(now())
+  updatedAt    String
+  status       orderStatus @default(PENDING)
+  userId       String
+}
+
+model item {
+  id          String   @id @default(uuid())
+  description String   @db.VarChar(255)
+  name        String   @db.VarChar(255)
+  value       Float
+  type        itemType
+  order       order?   @relation(fields: [orderId], references: [id])
+  orderId     String?
+}
