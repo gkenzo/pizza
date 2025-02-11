@@ -1,10 +1,11 @@
-import { Entity } from "@/core";
+import { Entity, ItemTypes } from "@/core";
 
 export interface ItemProps {
   id: string;
   description: string;
   name: string;
   value: number;
+  type: ItemTypes;
 }
 
 export class Item extends Entity<ItemProps> {
@@ -31,6 +32,12 @@ export class Item extends Entity<ItemProps> {
   }
   set value(value: number) {
     this.props.value = value;
+  }
+  get type() {
+    return this.props.type;
+  }
+  set type(value: ItemTypes) {
+    this.props.type = value;
   }
   static create(props: ItemProps) {
     const item = new Item({ ...props });
