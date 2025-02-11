@@ -5,14 +5,14 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { Item } from "@/modules/item/entities";
 import { Order } from "@/modules/order";
-import { inMemoryOrderRepository } from "@/modules/order/repositories";
+import { InMemoryOrderRepository } from "@/modules/order/repositories";
 
 import { CreateOrderUseCase } from "../create-order-use-case";
 describe("Create order", () => {
   let sut: CreateOrderUseCase;
 
   beforeEach(() => {
-    const repository = new inMemoryOrderRepository();
+    const repository = new InMemoryOrderRepository();
     sut = new CreateOrderUseCase(repository);
   });
   it("Should be able to create order with valid props", async () => {

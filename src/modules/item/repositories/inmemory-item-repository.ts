@@ -7,7 +7,9 @@ export class InMemoryItemRepository implements ItemRepository {
     this.items.push(data);
   };
   list: () => Promise<Item[]>;
-  get: (id: string) => Promise<Item>;
+  get = async (id: string): Promise<Item> => {
+    return this.items.find(item => item.id === id);
+  };
   delete: (id: string) => Promise<void>;
   update: (id: string) => Promise<void>;
 }

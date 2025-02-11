@@ -5,5 +5,5 @@ export interface OrderRepository {
   list: () => Promise<Order[]>;
   get: (id: string) => Promise<Order>;
   delete: (id: string) => Promise<void>;
-  update: (id: string) => Promise<void>;
+  update: (data: Order) => Promise<void>;
 }

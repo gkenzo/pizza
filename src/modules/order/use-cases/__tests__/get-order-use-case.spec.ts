@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { Item } from "@/modules/item/entities";
 
-import { inMemoryOrderRepository, OrderRepository } from "../../repositories";
+import { InMemoryOrderRepository, OrderRepository } from "../../repositories";
 import { CreateOrderInputDTO, CreateOrderUseCase } from "../create-order-use-case";
 import { GetOrderUseCase } from "../get-order-use-case";
 
@@ -13,7 +13,7 @@ describe("Get Order", () => {
   let sut: GetOrderUseCase;
   let repository: OrderRepository;
   beforeEach(() => {
-    repository = new inMemoryOrderRepository();
+    repository = new InMemoryOrderRepository();
     sut = new GetOrderUseCase(repository);
   });
 
