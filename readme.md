@@ -10,3 +10,5 @@
 
 [] - add authentication service
 [] - add authorization layer
+
+[] - create readme
