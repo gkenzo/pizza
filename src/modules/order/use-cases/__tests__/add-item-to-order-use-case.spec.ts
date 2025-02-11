@@ -15,13 +15,8 @@ describe("Add item to order", () => {
   let orderRepository: OrderRepository;
   let itemRepository: ItemRepository;
 
-  beforeEach(() => {
-    orderRepository = new InMemoryOrderRepository();
-    itemRepository = new InMemoryItemRepository();
-    sut = new AddItemToOrderUseCase(itemRepository, orderRepository);
-  });
-  it("Should be able to add item to existing order", async () => {
-    const item1 = Item.create({
+  const createItem = async () => {
+    const item = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
@@ -29,7 +24,18 @@ describe("Add item to order", () => {
       type: "Pizza"
     });
 
-    itemRepository.create(item1);
+    await itemRepository.create(item);
+
+    return item;
+  };
+
+  beforeEach(() => {
+    orderRepository = new InMemoryOrderRepository();
+    itemRepository = new InMemoryItemRepository();
+    sut = new AddItemToOrderUseCase(itemRepository, orderRepository);
+  });
+  it("Should be able to add item to existing order", async () => {
+    const item1 = await createItem();
 
     const dto = {
       userId: randomUUID(),
@@ -43,45 +49,20 @@ describe("Add item to order", () => {
     expect(order.items.length).toBe(1);
     expect(order.value).toBe(item1.value);
 
-    const item2 = Item.create({
-      id: randomUUID(),
-      description: faker.commerce.productDescription(),
-      name: faker.commerce.productName(),
-      value: randomInt(1000),
-      type: "Pizza"
-    });
-
-    itemRepository.create(item2);
+    const item2 = await createItem();
     await sut.execute({ itemId: item2.id, orderId: order.id });
 
     expect(order.items.length).toBe(2);
     expect(order.value).toBe(item1.value + item2.value);
 
-    const item3 = Item.create({
-      id: randomUUID(),
-      description: faker.commerce.productDescription(),
-      name: faker.commerce.productName(),
-      value: randomInt(1000),
-      type: "Pizza"
-    });
-
-    itemRepository.create(item3);
+    const item3 = await createItem();
     await sut.execute({ itemId: item3.id, orderId: order.id });
 
     expect(order.items.length).toBe(3);
     expect(order.value).toBe(item1.value + item2.value + item3.value);
   });
   it("Should change updatedAt prop after adding item to order", async () => {
-    const item1 = Item.create({
-      id: randomUUID(),
-      description: faker.commerce.productDescription(),
-      name: faker.commerce.productName(),
-      value: randomInt(1000),
-      type: "Pizza"
-    });
-
-    itemRepository.create(item1);
-
+    const item1 = await createItem();
     const dto = {
       userId: randomUUID(),
       items: [item1]
@@ -94,22 +75,24 @@ describe("Add item to order", () => {
     expect(order.value).toBe(item1.value);
     expect(order.updatedAt).toBeFalsy();
 
-    const item2 = Item.create({
-      id: randomUUID(),
-      description: faker.commerce.productDescription(),
-      name: faker.commerce.productName(),
-      value: randomInt(1000),
-      type: "Pizza"
-    });
+    const item2 = await createItem();
 
-    itemRepository.create(item2);
     await sut.execute({ itemId: item2.id, orderId: order.id });
 
     const getOrderUseCase = new GetOrderUseCase(orderRepository);
-    const foundOrder = await getOrderUseCase.execute({ orderId: order.id, isAdmin: true });
+    const { updatedAt: updateAt1 } = await getOrderUseCase.execute({ orderId: order.id, isAdmin: true });
 
-    expect(order.items.length).toBe(2);
-    expect(order.value).toBe(item1.value + item2.value);
-    expect(foundOrder.updatedAt).toBeInstanceOf(Date);
+    expect(updateAt1).toBeInstanceOf(Date);
+
+    const item3 = await createItem();
+    await sut.execute({ itemId: item3.id, orderId: order.id });
+
+    const { updatedAt: updateAt2 } = await getOrderUseCase.execute({ orderId: order.id, isAdmin: true });
+
+    expect(order.items.length).toBe(3);
+    expect(order.value).toBe(item1.value + item2.value + item3.value);
+    expect(updateAt2).toBeInstanceOf(Date);
+
+    expect(updateAt1.getTime()).toBeLessThan(updateAt2.getTime());
   });
 });
