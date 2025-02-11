@@ -5,9 +5,10 @@ import { Order } from "@/modules/order";
 
 import { OrderRepository } from "../repositories";
 
-interface CreateOrderInputDTO {
+export interface CreateOrderInputDTO {
   userId: string;
   items: Item[];
+  shippingCost?: number;
 }
 
 export class CreateOrderUseCase {
@@ -18,7 +19,7 @@ export class CreateOrderUseCase {
   };
 
   createOrder = async (dto: CreateOrderInputDTO) => {
-    const order = Order.create({ id: randomUUID(), createdAt: new Date(), ...dto });
+    const order = Order.create({ id: randomUUID(), createdAt: new Date(), shippingCost: 0, ...dto });
     await this.orderRepository.create(order);
 
     return order;
