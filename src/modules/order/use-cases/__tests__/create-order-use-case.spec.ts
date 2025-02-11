@@ -34,4 +34,13 @@ describe("Create order", () => {
     expect(order.userId).toBe(dto.userId);
     expect(order.id).toBeTypeOf("string");
   });
+
+  it("Should throw error if order is created without items", async () => {
+    const dto = {
+      userId: randomUUID(),
+      items: []
+    };
+
+    await expect(sut.execute(dto)).rejects.toThrowError();
+  });
 });
