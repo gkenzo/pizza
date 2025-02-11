@@ -33,7 +33,7 @@ describe("Get Order", () => {
     const createdOrder = await createOrderUseCase.execute(dto);
     await sut.execute({ orderId: createdOrder.id, userId: dto.userId });
   });
-  it("Should NOT be able to get an order that doest not belongs to the user", async () => {
+  it("Should NOT be able to get an order that does not belongs to the user", async () => {
     const item = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
