@@ -12,16 +12,12 @@ export interface OrderProps {
   totalValue?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  status?: any;
+  status?: string;
 }
 
 export class Order extends Entity<OrderProps> {
   get id() {
     return this.props.id;
-  }
-  set id(value: string) {
-    this.props.id = value;
   }
   get userId() {
     return this.props.userId;
@@ -36,7 +32,7 @@ export class Order extends Entity<OrderProps> {
     this.props.items = value;
   }
   get shippingCost() {
-    return this.props.shippingCost || 0;
+    return this.props.shippingCost;
   }
   set shippingCost(value: number) {
     this.props.shippingCost = value;
@@ -50,14 +46,17 @@ export class Order extends Entity<OrderProps> {
   get createdAt() {
     return this.props.createdAt;
   }
-  set createdAt(value: Date) {
-    this.props.createdAt = value;
-  }
   get updatedAt() {
     return this.props.updatedAt;
   }
   set updatedAt(value: Date) {
     this.props.updatedAt = value;
+  }
+  get status() {
+    return this.props.status;
+  }
+  set status(value: string) {
+    this.props.status = value;
   }
   private calculateItemsValue = () => {
     return this.props.items.reduce((total, obj) => total + obj.value, 0);
@@ -69,6 +68,8 @@ export class Order extends Entity<OrderProps> {
   };
   static create(props: OrderProps) {
     if (!props.items || isEmpty(props.items)) throw new Error("Cannot create an order without items");
+
+    if (!props.shippingCost) props.shippingCost = 0;
     const order = new Order({ ...props });
 
     return order;
