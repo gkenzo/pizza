@@ -25,7 +25,8 @@ describe("Add item to order", () => {
 
     const dto = {
       userId: randomUUID(),
-      items: [item1]
+      items: [item1],
+      shippingCost: 0
     };
 
     const createOrderUseCase = new CreateOrderUseCase(orderRepository);
@@ -51,7 +52,8 @@ describe("Add item to order", () => {
     const item1 = await createItem(itemRepository);
     const dto = {
       userId: randomUUID(),
-      items: [item1]
+      items: [item1],
+      shippingCost: 0
     };
 
     const createOrderUseCase = new CreateOrderUseCase(orderRepository);

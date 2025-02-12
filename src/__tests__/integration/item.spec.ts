@@ -3,6 +3,7 @@ import { randomInt } from "node:crypto";
 import { faker } from "@faker-js/faker";
 import { describe, it } from "vitest";
 
+import { ItemTypes } from "@/core";
 import { PrismaItemRepository } from "@/infra/database/prisma";
 import { CreateItemUseCase } from "@/modules/item/use-cases/create-item.use-case";
 
@@ -14,7 +15,7 @@ describe("Test database connection", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
   });
 });

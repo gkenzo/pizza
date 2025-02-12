@@ -3,6 +3,7 @@ import { randomInt, randomUUID } from "node:crypto";
 import { faker } from "@faker-js/faker";
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { ItemTypes } from "@/core";
 import { Item } from "@/modules/item/entities";
 
 import { InMemoryOrderRepository, OrderRepository } from "../../repositories";
@@ -23,12 +24,13 @@ describe("Get Order", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
 
     const dto = {
       userId: randomUUID(),
-      items: [item]
+      items: [item],
+      shippingCost: 0
     };
 
     const createOrderUseCase = new CreateOrderUseCase(repository);
@@ -44,12 +46,13 @@ describe("Get Order", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
 
     const dto = {
       userId: randomUUID(),
-      items: [item]
+      items: [item],
+      shippingCost: 0
     };
 
     const createOrderUseCase = new CreateOrderUseCase(repository);
@@ -63,24 +66,25 @@ describe("Get Order", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
     const item2 = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
 
-    const orderDto = {
+    const dto = {
       userId: randomUUID(),
-      items: [item1, item2]
+      items: [item1, item2],
+      shippingCost: 0
     };
 
     const createOrderUseCase = new CreateOrderUseCase(repository);
-    const createdOrder = await createOrderUseCase.execute(orderDto);
-    const order = await sut.execute({ orderId: createdOrder.id, userId: orderDto.userId });
+    const createdOrder = await createOrderUseCase.execute(dto);
+    const order = await sut.execute({ orderId: createdOrder.id, userId: dto.userId });
 
     expect(order.value).toBe(item1.value + item2.value);
   });
@@ -90,14 +94,14 @@ describe("Get Order", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
     const item2 = Item.create({
       id: randomUUID(),
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
 
     const orderDto: CreateOrderInputDTO = {
@@ -111,7 +115,7 @@ describe("Get Order", () => {
     const order = await sut.execute({ orderId: createdOrder.id, userId: orderDto.userId });
 
     expect(order.shippingCost).toBe(orderDto.shippingCost);
-    expect(order.totalValue).toBe(item1.value + item2.value + orderDto.shippingCost);
+    expect(order.totalValue).toBe(item1.value + item2.value + orderDto.shippingCost!);
     expect(order.totalValue).toBeDefined();
     expect(order.totalValue).toBeGreaterThan(0);
     expect(order.totalValue).to.not.be.toBeFalsy();

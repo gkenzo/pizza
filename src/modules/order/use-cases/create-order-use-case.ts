@@ -19,7 +19,13 @@ export class CreateOrderUseCase {
   };
 
   createOrder = async (dto: CreateOrderInputDTO) => {
-    const order = Order.create({ id: randomUUID(), createdAt: new Date(), shippingCost: 0, ...dto });
+    const order = Order.create({
+      id: randomUUID(),
+      createdAt: new Date(),
+      shippingCost: dto.shippingCost || 0,
+      items: dto.items,
+      userId: dto.userId
+    });
     await this.orderRepository.create(order);
 
     return order;

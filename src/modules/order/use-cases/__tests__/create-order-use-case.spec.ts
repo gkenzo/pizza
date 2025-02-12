@@ -3,6 +3,7 @@ import { randomInt, randomUUID } from "node:crypto";
 import { faker } from "@faker-js/faker";
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { ItemTypes } from "@/core";
 import { Item } from "@/modules/item/entities";
 import { Order } from "@/modules/order";
 import { InMemoryOrderRepository } from "@/modules/order/repositories";
@@ -21,12 +22,13 @@ describe("Create order", () => {
       description: faker.commerce.productDescription(),
       name: faker.commerce.productName(),
       value: randomInt(1000),
-      type: "Pizza"
+      type: ItemTypes.pizza
     });
 
     const dto = {
       userId: randomUUID(),
-      items: [item]
+      items: [item],
+      shippingCost: 0
     };
 
     const order = await sut.execute(dto);
@@ -42,7 +44,8 @@ describe("Create order", () => {
   it("Should throw error if order is created without items", async () => {
     const dto = {
       userId: randomUUID(),
-      items: []
+      items: [],
+      shippingCost: 0
     };
 
     await expect(sut.execute(dto)).rejects.toThrowError();
