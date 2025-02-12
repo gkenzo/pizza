@@ -4,7 +4,7 @@ import { faker } from "@faker-js/faker";
 import { describe, it } from "vitest";
 
 import { PrismaItemRepository } from "@/infra/database/prisma";
-import { CreateItemUseCase } from "@/modules/item/use-cases/create-item-use-case";
+import { CreateItemUseCase } from "@/modules/item/use-cases/create-item.use-case";
 
 describe("Test database connection", () => {
   const itemRepository = new PrismaItemRepository();
