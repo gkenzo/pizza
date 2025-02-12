@@ -35,7 +35,7 @@ model order {
   value        Float
   totalValue   Float
   createdAt    DateTime    @default(now())
-  updatedAt    String
+  updatedAt    DateTime
   status       orderStatus @default(PENDING)
   userId       String
 }
