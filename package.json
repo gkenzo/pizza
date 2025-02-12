@@ -15,7 +15,8 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "tsup"
+    "build": "tsup",
+    "dev": "ts-node-dev -r tsconfig-paths/register --poll src/infra/server/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +45,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
     "radash": "^12.1.0",
     "zod": "^3.24.1"
   }
