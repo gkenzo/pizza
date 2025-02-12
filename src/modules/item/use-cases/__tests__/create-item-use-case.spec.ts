@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { beforeEach, describe, it } from "vitest";
 
 import { InMemoryItemRepository } from "../../repositories";
-import { CreateItemInputDTO, CreateItemUseCase } from "../create-item-use-case";
+import { CreateItemInputDTO, CreateItemUseCase } from "../create-item.use-case";
 
 describe("Create item", () => {
   let sut: CreateItemUseCase;

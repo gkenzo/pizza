@@ -1,1 +1,4 @@
-export type ItemTypes = "Pizza" | "Beverage";
+export enum ItemTypes {
+  "pizza" = "pizza",
+  "beverage" = "beverage"
+}

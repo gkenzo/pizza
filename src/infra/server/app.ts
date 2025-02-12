@@ -1,9 +1,9 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express, { Application } from "express";
-import morgan from "morgan";
 
 import { healthCheckRoute } from "../http";
+import { errorHandlerMiddleware } from "../http/middlewares";
 
 class App {
   public server: Application;
@@ -13,12 +13,12 @@ class App {
     this.server = express();
     this.initMiddleware();
     this.initRoutes();
+    this.server.use(errorHandlerMiddleware.handle);
   }
 
   private initMiddleware() {
     this.setupCors();
     this.server.use(bodyParser.json());
-    this.server.use(morgan(this.isProduction ? "short" : "dev"));
   }
 
   private initRoutes() {
@@ -27,7 +27,6 @@ class App {
 
   private setupCors() {
     this.server.use(cors({ origin: "*" }));
-    // this.server.use(cors({ origin: env.APP_URL.includes("localhost") ? "*" : env.APP_URL }));
   }
 }
 

@@ -1,3 +1,2 @@
-export * from "./controllers";
-export * from "./routes";
+export * from "./application";
 export * from "./types";
