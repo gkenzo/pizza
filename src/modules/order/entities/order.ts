@@ -1,6 +1,7 @@
 import { isEmpty } from "radash";
 
 import { Entity } from "@/core";
+import { OrderStatus } from "@/core/enums/order-status";
 import { Item } from "@/modules/item/entities";
 
 export interface OrderProps {
@@ -12,7 +13,7 @@ export interface OrderProps {
   totalValue?: number;
   createdAt?: Date;
   updatedAt?: Date;
-  status?: string;
+  status?: OrderStatus;
 }
 
 export class Order extends Entity<OrderProps> {
@@ -55,16 +56,15 @@ export class Order extends Entity<OrderProps> {
   get status() {
     return this.props.status;
   }
-  set status(value: string) {
+  set status(value: OrderStatus) {
     this.props.status = value;
   }
   private calculateItemsValue = () => {
     return this.props.items.reduce((total, obj) => total + obj.value, 0);
   };
   addItem = (item: Item) => {
-    this.updatedAt = new Date();
-
-    return this.props.items.push(item);
+    this.props.updatedAt = new Date();
+    this.props.items.push(item);
   };
   static create(props: OrderProps) {
     if (!props.items || isEmpty(props.items)) throw new Error("Cannot create an order without items");

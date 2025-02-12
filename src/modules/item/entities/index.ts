@@ -39,9 +39,12 @@ export class Item extends Entity<ItemProps> {
   set type(value: ItemTypes) {
     this.props.type = value;
   }
-  static create(props: ItemProps) {
-    const item = new Item({ ...props });
 
-    return item;
+  toJson = () => {
+    return this.props;
+  };
+
+  static create(props: ItemProps) {
+    return new Item(props);
   }
 }
